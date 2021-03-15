@@ -3,6 +3,7 @@ package com.arvon.summary.volatileJmm;
 import ch.qos.logback.core.util.TimeUtil;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Arvon
@@ -14,9 +15,12 @@ class MyData {
     void addNumber() {
         this.number = 60;
     }
-
     void addNumberPlus() {
         this.number++;
+    }
+    AtomicInteger atomicInteger=new AtomicInteger(0);
+    void addAtomicInteger(){
+        this.atomicInteger.getAndIncrement();
     }
 }
 
@@ -26,7 +30,8 @@ public class VolatileTest {
         for (int i = 0; i < 20; i++) {
             new Thread(() -> {
                 for (int j = 0; j <=1000; j++) {
-                   myData.addNumberPlus();
+//                   myData.addNumberPlus();
+                   myData.addAtomicInteger();
                 }
             }, String.valueOf(i)).start();
         }
@@ -34,6 +39,7 @@ public class VolatileTest {
           Thread.yield();
         }
         System.out.println("mydate=:"+myData.number);
+        System.out.println("mydate=AtomicInteger:"+myData.atomicInteger);
     }
 
     //保证可见性
