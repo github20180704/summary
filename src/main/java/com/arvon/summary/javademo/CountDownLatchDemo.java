@@ -19,6 +19,7 @@ public class CountDownLatchDemo {
             }, CountryEnum.getForEachCountry(i).getMsg()).start();
         }
         //等待
+
         downLatch.await();
         System.out.println(Thread.currentThread().getName() + "----秦国统一六国");
     }
